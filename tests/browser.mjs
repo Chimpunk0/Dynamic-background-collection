@@ -12,6 +12,7 @@ const types = {
   ".css": "text/css",
   ".json": "application/json",
   ".webp": "image/webp",
+  ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",
 };
@@ -59,6 +60,34 @@ try {
     await readFile(path.join(root, "collection.json")),
   );
   assert.equal(await page.locator(".wallpaper").count(), manifest.length);
+  // The same visual mark must land on both endpoints without a duplicate logo.
+  const bounds = (selector) => page.locator(selector).boundingBox();
+  const scroll = async (y) => {
+    await page.evaluate((y) => scrollTo({ top: y, behavior: "instant" }), y);
+    await page.evaluate(() => dispatchEvent(new Event("scroll")));
+    await page.clock.runFor(50);
+  };
+  const assertAligned = (actual, expected) => {
+    for (const key of ["x", "y", "width", "height"])
+      assert.ok(
+        Math.abs(actual[key] - expected[key]) < 1.5,
+        `${key}: ${actual[key]} vs ${expected[key]}`,
+      );
+  };
+  await scroll(0);
+  const fullMark = await bounds(".brand-morph");
+  assertAligned(fullMark, await bounds(".hero-brand"));
+  assert.equal(await page.locator(".header-note, .eyebrow").count(), 0);
+  await scroll(120);
+  const midway = await bounds(".brand-morph");
+  assert.ok(midway.width < fullMark.width && midway.width > 150);
+  await page.screenshot({ path: "/tmp/wallpaper-brand-midway.png" });
+  await scroll(650);
+  assertAligned(await bounds(".brand-morph"), await bounds(".header .brand"));
+  await page.screenshot({ path: "/tmp/wallpaper-brand-compact.png" });
+  await scroll(0);
+  assertAligned(await bounds(".brand-morph"), fullMark);
+
   // Ensure every generated asset and download exists, not just visible lazy images.
   for (const item of manifest)
     for (const mode of ["light", "dark"])
@@ -152,6 +181,13 @@ try {
   await page.locator(".wallpaper").first().waitFor();
   assert.equal(await phase(), "1");
   await page.setViewportSize({ width: 390, height: 844 });
+  await scroll(0);
+  assertAligned(await bounds(".brand-morph"), await bounds(".hero-brand"));
+  await page.screenshot({ path: "/tmp/wallpaper-brand-mobile.png" });
+  await scroll(650);
+  assertAligned(await bounds(".brand-morph"), await bounds(".header .brand"));
+  await scroll(0);
+
   assert.equal(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -175,6 +211,17 @@ try {
   await page.screenshot({ path: "/tmp/wallpaper-gallery-mobile-viewer.png" });
   await page.locator("#close-viewer").click();
   await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.waitForFunction(
+    () => !document.documentElement.classList.contains("has-brand-morph"),
+  );
+  assert.equal(await page.locator(".brand-morph").isVisible(), false);
+  assert.equal(
+    await page
+      .locator(".hero-brand")
+      .evaluate((el) => getComputedStyle(el).opacity),
+    "1",
+  );
+
   assert.equal(
     await page
       .locator(".dark-layer")
