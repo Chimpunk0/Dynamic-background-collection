@@ -53,12 +53,6 @@ function setMode(value) {
         String(button.dataset.mode === value),
       ),
     );
-  document.querySelector("#mode-description").textContent = {
-    light: "The lighter side of the collection",
-    dark: "The darker side of the collection",
-    system: "Following your device’s appearance",
-    dynamic: "Light ↔ Dark · every 5 seconds",
-  }[value];
   restartCycle();
 }
 document

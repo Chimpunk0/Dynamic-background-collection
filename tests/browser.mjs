@@ -74,6 +74,33 @@ try {
         `${key}: ${actual[key]} vs ${expected[key]}`,
       );
   };
+  // At the top, both desktop cards (including captions) fit in the viewport.
+  for (const [width, height] of [
+    [1440, 900],
+    [1280, 720],
+    [1920, 1080],
+    [1920, 800],
+    [1024, 768],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await scroll(0);
+    const card = await page.locator(".wallpaper").nth(1).boundingBox();
+    assert.ok(
+      card.y + card.height <= height,
+      `First row clipped at ${width} × ${height}: bottom ${card.y + card.height}`,
+    );
+    assert.equal((await bounds(".header")).height, 77);
+    assert.ok(
+      await page
+        .locator(".intro .hero-brand")
+        .evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+    );
+  }
+  assert.equal(
+    await page.locator(".collection-status, #mode-description").count(),
+    0,
+  );
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await scroll(0);
   const fullMark = await bounds(".brand-morph");
   assertAligned(fullMark, await bounds(".hero-brand"));
@@ -144,6 +171,12 @@ try {
   const first = page.locator(".open-wallpaper").first();
   await first.click();
   assert.equal(await page.locator("#viewer").evaluate((el) => el.open), true);
+  assert.equal(
+    await page
+      .locator(".viewer-stage")
+      .evaluate((el) => getComputedStyle(el).backgroundColor),
+    "rgba(0, 0, 0, 0)",
+  );
   await page.waitForFunction(
     () => document.querySelector("#preview-status").textContent === "",
   );
@@ -181,6 +214,7 @@ try {
   await page.locator(".wallpaper").first().waitFor();
   assert.equal(await phase(), "1");
   await page.setViewportSize({ width: 390, height: 844 });
+  assert.equal((await bounds(".header")).height, 60);
   await scroll(0);
   assertAligned(await bounds(".brand-morph"), await bounds(".hero-brand"));
   await page.screenshot({ path: "/tmp/wallpaper-brand-mobile.png" });

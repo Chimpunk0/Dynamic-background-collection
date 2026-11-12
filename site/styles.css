@@ -4,6 +4,13 @@
   --muted: #777970;
   --line: #d5d6cf;
   --dark-opacity: 0;
+  --header-height: 77px;
+  --gallery-image-height: calc((min(92vw, 1900px - 8vw) - 24px) / 3.2);
+  --intro-height: clamp(
+    110px,
+    calc(100svh - var(--header-height) - var(--gallery-image-height) - 160px),
+    280px
+  );
   font-family: Arial, Helvetica, sans-serif;
   color: var(--ink);
   background: var(--paper);
@@ -46,7 +53,7 @@ a {
   text-decoration: none;
 }
 .header {
-  height: 110px;
+  height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -100,15 +107,15 @@ a {
   margin-left: 12px;
 }
 .intro {
-  min-height: 390px;
-  padding: 57px 0 60px;
+  height: var(--intro-height);
+  padding: 20px 0 28px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   gap: 30px;
 }
 .intro .hero-brand {
-  font-size: clamp(42px, 7.3vw, 128px);
+  font-size: clamp(30px, min(7.3vw, (var(--intro-height) - 48px) / 1.9), 128px);
   width: max-content;
   margin: 0;
   scroll-margin-top: 150px;
@@ -184,15 +191,12 @@ a {
   max-width: 220px;
   cursor: pointer;
 }
-.collection-status {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  padding: 14px 0 27px;
-  font-size: 10px;
-  color: var(--muted);
-}
 .gallery {
+  margin: 16px auto 0;
+  max-width: max(
+    480px,
+    calc((100svh - var(--header-height) - 270px) * 3.2 + 24px)
+  );
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 24px;
@@ -375,7 +379,7 @@ dialog::backdrop {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #151613;
+  background: transparent;
 }
 .viewer-images {
   position: absolute;
@@ -466,20 +470,17 @@ body:has(dialog[open]) {
     max-width: 1900px;
     margin: auto;
   }
-  .intro {
-    min-height: 460px;
-  }
 }
 @media (max-width: 720px) {
+  :root {
+    --header-height: 60px;
+  }
   body {
     padding: 0 5vw;
   }
-  .header {
-    height: 85px;
-  }
   .intro {
-    min-height: 330px;
-    padding: 36px 0 40px;
+    height: auto;
+    padding: 28px 0 32px;
     display: block;
   }
   .intro .hero-brand {
@@ -510,13 +511,8 @@ body:has(dialog[open]) {
     max-width: 190px;
     font-size: 11px;
   }
-  .collection-status {
-    padding-bottom: 20px;
-  }
-  .collection-status span:last-child {
-    display: none;
-  }
   .gallery {
+    max-width: none;
     gap: 28px;
     grid-template-columns: 1fr;
   }
