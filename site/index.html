@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f4f4f0" />
+    <meta
+      name="description"
+      content="A small collection of wallpapers in two lights. Browse, crossfade, and download light and dark pairs."
+    />
+    <title>Dynamic Backgrounds — A wallpaper collection</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='20' fill='%231b1c19'/%3E%3Cpath d='M20 3a17 17 0 000 34Z' fill='%23f4f4f0'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#collection">Skip to wallpapers</a>
+    <header class="header">
+      <a class="brand" href="./" aria-label="Dynamic Backgrounds home"
+        ><span class="brand-symbol" aria-hidden="true"></span
+        ><span>Dynamic<br />Backgrounds</span></a
+      >
+      <span class="header-note">A personal wallpaper collection</span>
+      <a
+        class="text-link"
+        href="https://github.com/Chimpunk0/Dynamic-background-collection"
+        target="_blank"
+        rel="noopener noreferrer"
+        >GitHub <span aria-hidden="true">↗</span></a
+      >
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">One scene. Two moods.</p>
+          <h1 id="page-title">
+            A change<br />of scenery<span class="period">.</span>
+          </h1>
+        </div>
+        <p class="intro-note">
+          A little collection for your desktop.<br />From light to dark, and
+          back again.
+        </p>
+      </section>
+      <section id="collection" aria-label="Wallpaper collection">
+        <div class="toolbar">
+          <div class="collection-heading">
+            <h2>Collection</h2>
+            <span id="count" class="count">—</span>
+          </div>
+          <div
+            class="mode-control"
+            role="group"
+            aria-label="Wallpaper appearance"
+          >
+            <button type="button" data-mode="light" aria-pressed="false">
+              Light
+            </button>
+            <button type="button" data-mode="dark" aria-pressed="false">
+              Dark
+            </button>
+            <button type="button" data-mode="system" aria-pressed="false">
+              System
+            </button>
+            <button type="button" data-mode="dynamic" aria-pressed="true">
+              <span class="mode-dot" aria-hidden="true"></span>Dynamic
+            </button>
+          </div>
+          <label class="filter-label"
+            ><span class="sr-only">Filter wallpapers by collection</span
+            ><select id="category">
+              <option value="">All collections</option>
+            </select></label
+          >
+        </div>
+        <div class="collection-status">
+          <span id="mode-description">Light ↔ Dark · every 5 seconds</span
+          ><span>Made for a different atmosphere.</span>
+        </div>
+        <p id="load-status" role="status">Loading the collection…</p>
+        <div id="gallery" class="gallery"></div>
+        <noscript
+          ><p>
+            Enable JavaScript to browse and switch between wallpaper pairs. You
+            can also find the originals in the GitHub repository.
+          </p></noscript
+        >
+      </section>
+    </main>
+    <footer>
+      <span>Different light. Same place.</span
+      ><a href="#page-title" class="text-link">Back to top ↑</a>
+    </footer>
+    <dialog id="viewer" aria-labelledby="viewer-title">
+      <div class="viewer-shell">
+        <header class="viewer-header">
+          <div>
+            <h2 id="viewer-title"></h2>
+            <p id="viewer-detail"></p>
+          </div>
+          <button type="button" id="close-viewer" class="plain-button">
+            Close <span aria-hidden="true">×</span>
+          </button>
+        </header>
+        <div class="viewer-stage">
+          <div class="image-pair viewer-images">
+            <img id="viewer-light" alt="" /><img
+              id="viewer-dark"
+              alt=""
+              class="dark-layer"
+            />
+          </div>
+          <p id="preview-status" role="status"></p>
+          <button
+            type="button"
+            id="previous"
+            class="image-arrow previous"
+            aria-label="Previous wallpaper"
+          >
+            ←</button
+          ><button
+            type="button"
+            id="next"
+            class="image-arrow next"
+            aria-label="Next wallpaper"
+          >
+            →
+          </button>
+        </div>
+        <div class="viewer-bottom">
+          <div
+            class="mode-control"
+            role="group"
+            aria-label="Preview appearance"
+          >
+            <button type="button" data-mode="light" aria-pressed="false">
+              Light</button
+            ><button type="button" data-mode="dark" aria-pressed="false">
+              Dark</button
+            ><button type="button" data-mode="system" aria-pressed="false">
+              System</button
+            ><button type="button" data-mode="dynamic" aria-pressed="true">
+              <span class="mode-dot" aria-hidden="true"></span>Dynamic
+            </button>
+          </div>
+          <div class="downloads">
+            <a id="download-light" download
+              >Light <span aria-hidden="true">↓</span></a
+            ><a id="download-dark" download
+              >Dark <span aria-hidden="true">↓</span></a
+            >
+          </div>
+        </div>
+        <div class="viewer-meta">
+          <span id="viewer-position"></span><span id="viewer-resolution"></span
+          ><span>Download originals ↑</span>
+        </div>
+      </div>
+    </dialog>
+  </body>
+</html>
