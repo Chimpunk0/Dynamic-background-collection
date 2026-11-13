@@ -1,12 +1,10 @@
 # Dynamic Wallpaper Gallery
 
 A collection of paired light and dark desktop backgrounds, with static web gallery.
-Web gallery link: [Here](https://chimpunk0.github.io/Dynamic-background-collection/)
 
-## Features
+[Web gallery here](https://chimpunk0.github.io/Dynamic-background-collection/)
 
-- Full-screen previews with arrow-key navigation, Escape to close, and original light and dark downloads. Filter the gallery by collection.
-- WebP thumbnails up to 960px wide and previews up to 1920px wide. Original files remain untouched.
+
 
 ## Adding wallpapers
 
