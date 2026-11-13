@@ -3,6 +3,13 @@
   --ink: #22231f;
   --muted: #777970;
   --line: #d5d6cf;
+  --hover: #e4e5df;
+  --placeholder: #e2e3dd;
+  --overlay-paper: #f4f4f0d9;
+  --backdrop: #222b;
+  --notice-ink: #fff;
+  --notice-background: #222c;
+  color-scheme: light;
   --dark-opacity: 0;
   --header-height: 77px;
   --gallery-image-height: calc((min(92vw, 1900px - 8vw) - 24px) / 3.2);
@@ -16,6 +23,39 @@
   background: var(--paper);
   font-synthesis: none;
   scroll-behavior: smooth;
+}
+:root[data-theme="dark"] {
+  --paper: #0b0b0f;
+  --ink: #dddce0;
+  --muted: #88868f;
+  --line: #2a2930;
+  --hover: #1b1a20;
+  --placeholder: #1d1c22;
+  --overlay-paper: #0b0b0fd9;
+  --backdrop: #dddb;
+  --notice-ink: #000;
+  --notice-background: #dddc;
+  color-scheme: dark;
+}
+:root[data-theme="dark"] .brand-symbol {
+  filter: invert(1);
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 0;
+  background: transparent;
+  font-size: 12px;
+}
+.theme-toggle:hover [data-theme-label] {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 * {
   box-sizing: border-box;
@@ -171,7 +211,7 @@ a {
   white-space: nowrap;
 }
 .mode-control button:hover {
-  background: #e4e5df;
+  background: var(--hover);
 }
 .mode-control button[aria-pressed="true"] {
   background: var(--ink);
@@ -215,7 +255,7 @@ a {
 .image-pair {
   position: relative;
   overflow: hidden;
-  background: #e2e3dd;
+  background: var(--placeholder);
   isolation: isolate;
 }
 .wallpaper .image-pair {
@@ -346,7 +386,7 @@ dialog {
   padding: 0 4vw;
 }
 dialog::backdrop {
-  background: #222b;
+  background: var(--backdrop);
 }
 .viewer-shell {
   max-width: 1800px;
@@ -395,8 +435,8 @@ dialog::backdrop {
   left: 50%;
   transform: translateX(-50%);
   font-size: 12px;
-  color: white;
-  background: #222c;
+  color: var(--notice-ink);
+  background: var(--notice-background);
   padding: 8px 12px;
   border-radius: 4px;
   pointer-events: none;
@@ -412,7 +452,7 @@ dialog::backdrop {
   width: 42px;
   display: grid;
   place-items: center;
-  background: #f4f4f0d9;
+  background: var(--overlay-paper);
   border-radius: 50%;
   font-size: 20px;
 }

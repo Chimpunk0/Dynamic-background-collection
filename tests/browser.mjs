@@ -54,8 +54,53 @@ try {
   page.on("pageerror", (error) => errors.push(error.message));
   await page.clock.install({ time: new Date("2026-11-12T12:00:00Z") });
   await page.clock.pauseAt(new Date("2026-11-12T12:00:01Z"));
+  await page.emulateMedia({ colorScheme: "dark" });
   await page.goto(url);
   await page.locator(".wallpaper").first().waitFor();
+  // Website theme follows the device until a separate, persistent choice is made.
+  const websiteTheme = () =>
+    page.evaluate(() => document.documentElement.dataset.theme);
+  assert.equal(await websiteTheme(), "dark");
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.waitForFunction(
+    () => document.documentElement.dataset.theme === "light",
+  );
+  await page.getByRole("button", { name: "Use dark website theme" }).click();
+  assert.equal(await websiteTheme(), "dark");
+  assert.equal(
+    await page
+      .locator(":root")
+      .evaluate((el) => getComputedStyle(el).backgroundColor),
+    "rgb(11, 11, 15)",
+  );
+  assert.equal(
+    await page.locator('meta[name="theme-color"]').getAttribute("content"),
+    "#0b0b0f",
+  );
+  assert.equal(
+    await page
+      .locator(".wallpaper img")
+      .first()
+      .evaluate((el) => getComputedStyle(el).filter),
+    "none",
+  );
+  assert.equal(
+    await page.locator("body").evaluate((el) => getComputedStyle(el).filter),
+    "none",
+  );
+  await page.reload();
+  await page.locator(".wallpaper").first().waitFor();
+  assert.equal(await websiteTheme(), "dark");
+  await page.getByRole("button", { name: "Use light website theme" }).click();
+  assert.equal(await websiteTheme(), "light");
+  assert.equal(
+    await page
+      .locator(":root")
+      .evaluate((el) => getComputedStyle(el).backgroundColor),
+    "rgb(244, 244, 240)",
+  );
+  await page.getByRole("button", { name: "Use dark website theme" }).click();
+
   const manifest = JSON.parse(
     await readFile(path.join(root, "collection.json")),
   );
@@ -171,6 +216,19 @@ try {
   const first = page.locator(".open-wallpaper").first();
   await first.click();
   assert.equal(await page.locator("#viewer").evaluate((el) => el.open), true);
+  assert.equal(
+    await page
+      .locator("#viewer")
+      .evaluate((el) => getComputedStyle(el).backgroundColor),
+    "rgb(11, 11, 15)",
+  );
+  assert.equal(
+    await page
+      .locator("#viewer-light")
+      .evaluate((el) => getComputedStyle(el).filter),
+    "none",
+  );
+
   assert.equal(
     await page
       .locator(".viewer-stage")

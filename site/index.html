@@ -10,6 +10,7 @@
     />
     <title>Dynamic Backgrounds — A wallpaper collection</title>
     <link rel="icon" href="brand.svg" type="image/svg+xml" />
+    <script src="theme.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <script type="module" src="brand-motion.js"></script>
     <script type="module" src="app.js"></script>
@@ -25,13 +26,23 @@
         <img class="brand-symbol" src="brand.svg" alt="" />
         <span>Dynamic<br />Backgrounds</span>
       </a>
-      <a
-        class="text-link"
-        href="https://github.com/Chimpunk0/Dynamic-background-collection"
-        target="_blank"
-        rel="noopener noreferrer"
-        >GitHub <span aria-hidden="true">↗</span></a
-      >
+      <div class="header-actions">
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          type="button"
+          aria-label="Use dark website theme"
+        >
+          <span aria-hidden="true">◐</span><span data-theme-label>Dark</span>
+        </button>
+        <a
+          class="text-link"
+          href="https://github.com/Chimpunk0/Dynamic-background-collection"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub <span aria-hidden="true">↗</span></a
+        >
+      </div>
     </header>
     <main>
       <section class="intro" aria-labelledby="page-title">
