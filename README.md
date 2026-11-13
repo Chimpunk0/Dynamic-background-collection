@@ -40,14 +40,14 @@ npm run test:browser
 
 The workflow in `.github/workflows/pages.yml` installs dependencies, runs pairing checks, builds the gallery, and deploys `dist/` using the official Pages actions. It runs on pushes to `main` and can also be triggered manually.
 
-%## Growing beyond Pages storage
+## Growing beyond Pages storage
 
-%GitHub Pages has a [1 GB published-site limit](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits). You can keep the viewer there while storing originals elsewhere.
+GitHub Pages has a [1 GB published-site limit](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits). You can keep the viewer there while storing originals elsewhere.
 
-%Mirror the contents of `individual-images/` to an HTTPS host, preserving relative paths. Set the repository Actions variable `WALLPAPER_BASE_URL` to that mirror's base URL, or test locally:
+Mirror the contents of `individual-images/` to an HTTPS host, preserving relative paths. Set the repository Actions variable `WALLPAPER_BASE_URL` to that mirror's base URL, or test locally:
 
-%```sh
-%WALLPAPER_BASE_URL=https://images.example.com/wallpapers npm run build
-%```
+```sh
+WALLPAPER_BASE_URL=https://images.example.com/wallpapers npm run build
+```
 
-%The build then omits original copies from `dist/` and links downloads to the mirror. Optimized previews stay local and must still fit Pages limits. Source images remain necessary for builds; this setting does %not shrink Git history or verify that the mirror is available. Cross-origin downloads may open the image instead of saving it, depending on the host's response headers.
+The build then omits original copies from `dist/` and links downloads to the mirror. Optimized previews stay local and must still fit Pages limits. Source images remain necessary for builds; this setting does %not shrink Git history or verify that the mirror is available. Cross-origin downloads may open the image instead of saving it, depending on the host's response headers.
