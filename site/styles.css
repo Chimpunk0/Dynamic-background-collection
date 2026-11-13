@@ -53,6 +53,10 @@
   background: transparent;
   font-size: 12px;
 }
+.theme-toggle .theme-symbol {
+  width: 15px;
+  height: 15px;
+}
 .theme-toggle:hover [data-theme-label] {
   text-decoration: underline;
   text-underline-offset: 4px;
@@ -370,9 +374,73 @@ footer {
   gap: 25px;
   padding: 12px 0 12px 20px;
 }
-.plain-button span {
-  font-size: 28px;
-  font-weight: 300;
+/* Keycap adapted from Uiverse.io by 20essentials, scaled for the header. */
+.keycap {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #282828, #202020);
+  box-shadow:
+    inset -4px 0 4px rgba(0, 0, 0, 0.15),
+    inset 0 -4px 4px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(0, 0, 0, 0.75),
+    5px 10px 13px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  transition:
+    transform 0.1s ease-in-out,
+    box-shadow 0.1s ease-in;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.keycap .letter {
+  position: absolute;
+  z-index: 1;
+  left: 7px;
+  top: 7px;
+  color: #e9e9e9;
+  font-size: 11px;
+  font-weight: 400;
+  transition: transform 0.1s ease-in-out;
+}
+.keycap::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  bottom: 8px;
+  right: 7px;
+  background: linear-gradient(90deg, #232323, #4a4a4a);
+  border-radius: 6px;
+  box-shadow:
+    -5px -5px 5px rgba(255, 255, 255, 0.25),
+    5px 3px 5px rgba(0, 0, 0, 0.15);
+  border-left: 1px solid #0004;
+  border-bottom: 1px solid #0004;
+  border-top: 1px solid #0009;
+  transition: all 0.1s ease-in-out;
+}
+#close-viewer:active .keycap {
+  transform: translateY(2px);
+  box-shadow:
+    inset -2px 0 2px rgba(0, 0, 0, 0.1),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(0, 0, 0, 0.5),
+    3px 5px 8px rgba(0, 0, 0, 0.3);
+}
+#close-viewer:active .keycap::before {
+  top: 3px;
+  left: 3px;
+  bottom: 6px;
+  right: 6px;
+  box-shadow:
+    -3px -3px 3px rgba(255, 255, 255, 0.15),
+    3px 2px 3px rgba(0, 0, 0, 0.1);
+}
+#close-viewer:active .letter {
+  transform: translateY(1px);
 }
 dialog {
   background: var(--paper);

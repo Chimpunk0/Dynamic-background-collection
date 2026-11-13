@@ -55,17 +55,34 @@ try {
   await page.clock.install({ time: new Date("2026-11-12T12:00:00Z") });
   await page.clock.pauseAt(new Date("2026-11-12T12:00:01Z"));
   await page.emulateMedia({ colorScheme: "dark" });
+  // Legacy binary choices must not keep the new default stuck in an override.
+  await page.addInitScript(() =>
+    localStorage.setItem("website-theme", "light"),
+  );
   await page.goto(url);
   await page.locator(".wallpaper").first().waitFor();
   // Website theme follows the device until a separate, persistent choice is made.
   const websiteTheme = () =>
     page.evaluate(() => document.documentElement.dataset.theme);
   assert.equal(await websiteTheme(), "dark");
+  assert.equal(
+    await page.locator("[data-theme-label]").textContent(),
+    "System",
+  );
+  assert.equal(
+    await page.locator("#theme-toggle img").getAttribute("src"),
+    "brand.svg",
+  );
   await page.emulateMedia({ colorScheme: "light" });
   await page.waitForFunction(
     () => document.documentElement.dataset.theme === "light",
   );
-  await page.getByRole("button", { name: "Use dark website theme" }).click();
+  await page
+    .getByRole("button", { name: "Website theme: system. Switch to light" })
+    .click();
+  await page
+    .getByRole("button", { name: "Website theme: light. Switch to dark" })
+    .click();
   assert.equal(await websiteTheme(), "dark");
   assert.equal(
     await page
@@ -91,7 +108,26 @@ try {
   await page.reload();
   await page.locator(".wallpaper").first().waitFor();
   assert.equal(await websiteTheme(), "dark");
-  await page.getByRole("button", { name: "Use light website theme" }).click();
+  await page
+    .getByRole("button", { name: "Website theme: dark. Switch to system" })
+    .click();
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.waitForFunction(
+    () => document.documentElement.dataset.theme === "dark",
+  );
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.waitForFunction(
+    () => document.documentElement.dataset.theme === "light",
+  );
+  await page.reload();
+  await page.locator(".wallpaper").first().waitFor();
+  assert.equal(
+    await page.locator("[data-theme-label]").textContent(),
+    "System",
+  );
+  await page
+    .getByRole("button", { name: "Website theme: system. Switch to light" })
+    .click();
   assert.equal(await websiteTheme(), "light");
   assert.equal(
     await page
@@ -99,7 +135,9 @@ try {
       .evaluate((el) => getComputedStyle(el).backgroundColor),
     "rgb(244, 244, 240)",
   );
-  await page.getByRole("button", { name: "Use dark website theme" }).click();
+  await page
+    .getByRole("button", { name: "Website theme: light. Switch to dark" })
+    .click();
 
   const manifest = JSON.parse(
     await readFile(path.join(root, "collection.json")),
@@ -255,6 +293,15 @@ try {
   await page.waitForFunction(
     () => document.querySelector("#preview-status").textContent === "",
   );
+  assert.equal(
+    await page.locator("#close-viewer .letter").textContent(),
+    "Esc",
+  );
+  assert.equal(
+    await page.locator("#close-viewer").getAttribute("aria-keyshortcuts"),
+    "Escape",
+  );
+  assert.ok(!(await page.locator("#close-viewer").textContent()).includes("×"));
   await page.screenshot({ path: "/tmp/wallpaper-gallery-viewer.png" });
   await page.keyboard.press("Escape");
   assert.equal(await page.locator("#viewer").evaluate((el) => el.open), false);
@@ -301,7 +348,8 @@ try {
     true,
   );
   await page.screenshot({ path: "/tmp/wallpaper-gallery-mobile-viewer.png" });
-  await page.locator("#close-viewer").click();
+  await page.locator("#close-viewer .keycap").click();
+  assert.equal(await page.locator("#viewer").evaluate((el) => el.open), false);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.waitForFunction(
     () => !document.documentElement.classList.contains("has-brand-morph"),

@@ -31,9 +31,12 @@
           id="theme-toggle"
           class="theme-toggle"
           type="button"
-          aria-label="Use dark website theme"
+          aria-label="Website theme: system. Switch to light"
         >
-          <span aria-hidden="true">◐</span><span data-theme-label>Dark</span>
+          <img class="brand-symbol theme-symbol" src="brand.svg" alt="" /><span
+            data-theme-label
+            >System</span
+          >
         </button>
         <a
           class="text-link"
@@ -93,8 +96,7 @@
       </section>
     </main>
     <footer>
-      <span>.</span
-      ><a href="#top" class="text-link">Back to top</a>
+      <span>.</span><a href="#top" class="text-link">Back to top</a>
     </footer>
     <dialog id="viewer" aria-labelledby="viewer-title">
       <div class="viewer-shell">
@@ -103,8 +105,17 @@
             <h2 id="viewer-title"></h2>
             <p id="viewer-detail"></p>
           </div>
-          <button type="button" id="close-viewer" class="plain-button">
-            Close <span aria-hidden="true">×</span>
+          <button
+            type="button"
+            id="close-viewer"
+            class="plain-button"
+            aria-label="Close preview (Esc)"
+            aria-keyshortcuts="Escape"
+          >
+            Close
+            <span class="keycap" aria-hidden="true"
+              ><span class="letter">Esc</span></span
+            >
           </button>
         </header>
         <div class="viewer-stage">
@@ -157,8 +168,7 @@
           </div>
         </div>
         <div class="viewer-meta">
-          <span id="viewer-position"></span><span id="viewer-resolution"></span
-          ><span>Download originals ↑</span>
+          <span id="viewer-position"></span><span id="viewer-resolution"></span>
         </div>
       </div>
     </dialog>
