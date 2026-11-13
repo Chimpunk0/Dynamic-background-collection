@@ -1,6 +1,7 @@
 # Dynamic Wallpaper Gallery
 
-A gallery of paired light and dark desktop backgrounds, with optimized previews and a GitHub Pages deployment workflow.
+A collection of paired light and dark desktop backgrounds, with static web gallery.
+Web gallery link: [Here](https://chimpunk0.github.io/Dynamic-background-collection/)
 
 ## Features
 
